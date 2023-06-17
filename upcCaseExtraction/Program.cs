@@ -64,23 +64,6 @@ class Program
         }
     }
 
-
-    static public async void GetCasesFromUpc(int pageNr)
-    {
-        Console.WriteLine($"Read page: {pageNr}\t{DateTime.Now.ToShortTimeString()}");
-        HttpResponseMessage response = await GetHttpResponseAsync($"https://api-prod.unified-patent-court.org/upc/public/api/v4/cases?pageSize=100&pageNumber={pageNr}");
-        if (response.IsSuccessStatusCode)
-        {
-            string json = await response.Content.ReadAsStringAsync();
-            await InsertJsonToLiteDBAsync(json);
-        }
-        else
-        {
-            Console.WriteLine($"Error: {response.StatusCode}");
-        }
-    }
-
-
     static async Task<HttpResponseMessage> GetHttpResponseAsync(string uri)
     {
         return await httpRetryPolicy.ExecuteAsync(async () =>
